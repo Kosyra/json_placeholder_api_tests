@@ -1,0 +1,675 @@
+{
+	"info": {
+		"_postman_id": "5e415977-49b1-42a2-ab50-2ed9fbccc17d",
+		"name": "json_placeholder_api_tests",
+		"description": "Korzystając z otwartego API JSONPlaceholder (https://jsonplaceholder.typicode.com/) zaimplementuj testy akceptacyjne pokrywające podstawowe przypadki testowe dla endpointów /posts oraz /comments. Projekt może być w formie implementacji lub kolekcji Postman’a.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Post a post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dd25ae16-baf7-447c-a3f6-f7c187c11cc8",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"const userId = Number(pm.environment.get(\"userId_new\"));",
+									"",
+									"pm.test(\"Check if body was created and has specific data\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.userId).to.eql(userId);",
+									"    pm.expect(response.title).to.eql(pm.variables.get(\"postTitle_new\"));",
+									"    pm.expect(response.body).to.eql(pm.variables.get(\"postBody_new\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": {{userId_new}},\n    \"title\": \"{{postTitle_new}}\",\n    \"body\": \"{{postBody_new}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/posts",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all posts of specific user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fc6f31f2-b89e-4072-aa0a-a300b3862611",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/posts?userId={{userId_existing}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{userId_existing}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a specific post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a166928e-13be-4120-91d5-792a450e2460",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check if json body was returned\", function (){",
+									"    pm.response.to.have.jsonBody();",
+									"})",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "94399823-c78f-4cf6-9310-896f0637d707",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"type": "text",
+								"value": ""
+							}
+						],
+						"url": {
+							"raw": "{{url}}/posts/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{postId_existing}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e09dc01b-1307-41a1-8438-f9a3d1ea2981",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const response = pm.response.json();",
+									"pm.test(\"Number of returned objects should be 100\", function(){",
+									"    pm.expect(response.length).to.equal(100);",
+									"});",
+									"",
+									"pm.test(\"Check if json body was returned\", function (){",
+									"    pm.response.to.have.jsonBody();",
+									"})",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/posts",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change a post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ffbdb161-846e-4417-a614-828bbfaa5915",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const userId = Number(pm.environment.get(\"userId_existing\"));",
+									"",
+									"pm.test(\"Body should be edited\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.userId).to.eql(userId);",
+									"    pm.expect(response.title).to.eql(pm.variables.get(\"postTitle_edited\"));",
+									"    pm.expect(response.body).to.eql(pm.variables.get(\"postBody_edited\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": {{postId_existing}},\n    \"title\": \"{{postTitle_edited}}\",\n    \"body\": \"{{postBody_edited}}\",\n    \"userId\": {{userId_existing}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/posts/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{postId_existing}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change title",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a0e1ff5b-6ff3-4ec8-967e-42b09dcf73ef",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const postId = Number(pm.environment.get(\"postId_existing\"));",
+									"",
+									"pm.test(\"Title should be edited\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.eql(postId);",
+									"    pm.expect(response.title).to.eql(pm.variables.get(\"postTitle_edited2\"));",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"{{postTitle_edited2}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/posts/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{postId_existing}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "69d49e16-09b8-423a-abc8-404f4433d0dd",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const postId = Number(pm.environment.get(\"postId_existing\"));",
+									"",
+									"pm.test(\"Check if title was edited\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.id).to.eql(postId);",
+									"    pm.expect(response.body).to.eql(pm.variables.get(\"postBody_edited2\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"body\": \"{{postBody_edited2}}\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/posts/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{postId_existing}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d622aa0b-9ab6-4bd3-a58d-b78b1cf2a9e0",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/posts/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"posts",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{postId_existing}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Get all comments of specific post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a46fe580-df22-42e2-910b-07f17403b3ed",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Check if json body was returned\", function (){",
+									"    pm.response.to.have.jsonBody();",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/comments?postId={{postId_existing}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"comments"
+							],
+							"query": [
+								{
+									"key": "postId",
+									"value": "{{postId_existing}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post a comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ea73f4b6-302d-4e7c-911c-22117bbe1d5d",
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
+									"});",
+									"",
+									"const postId = Number(pm.environment.get(\"postId_existing\"));",
+									"",
+									"pm.test(\"Check if body for comment was created and has specific data\", function () {",
+									"    const response = pm.response.json();",
+									"    pm.expect(response.postId).to.eql(postId);",
+									"    pm.expect(response.name).to.eql(pm.variables.get(\"commentName_new\"));",
+									"    pm.expect(response.email).to.eql(pm.variables.get(\"commentEmail_new\"));",
+									"    pm.expect(response.body).to.eql(pm.variables.get(\"commentBody_new\"));",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0c7dd296-7d81-447b-9eaa-52e2df4bb205",
+								"exec": [
+									"pm.variables.set(\"commentEmail_new\", getRandomEmail());",
+									"",
+									"function getRandomEmail(){",
+									"    return \"test\" + _.random(1,1000000) + \"@io.com\";",
+									"}",
+									"console.log(\"Generated email for 'Post a comment' test is: \" + pm.variables.get(\"commentEmail_new\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"postId\": \"{{postId_existing}}\",\n    \"name\": \"{{commentName_new}}\",\n    \"email\": \"{{commentEmail_new}}\",\n    \"body\": \"{{commentBody_new}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/comments?postId={{postId_existing}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"comments"
+							],
+							"query": [
+								{
+									"key": "postId",
+									"value": "{{postId_existing}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "7b83b522-5e12-414f-ab9b-7a42a1c8a9e1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "68b3cd70-e54e-490e-8169-fb182c7df74b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "4887bd51-3db0-4dd9-869b-96be437aa470",
+			"key": "postTitle_new",
+			"value": "text title test 1",
+			"type": "string"
+		},
+		{
+			"id": "aee03c24-83f5-437d-a60c-3e4a0e7c4500",
+			"key": "postBody_new",
+			"value": "text body test 1",
+			"type": "string"
+		},
+		{
+			"id": "a89ba4e4-910c-4b59-9baf-e2cd81d5991b",
+			"key": "postTitle_edited",
+			"value": "test for changing posts",
+			"type": "string"
+		},
+		{
+			"id": "e64cd3c8-7f84-4a41-8984-a6c388f8f6d0",
+			"key": "postBody_edited",
+			"value": "body text edited",
+			"type": "string"
+		},
+		{
+			"id": "8250c1b2-205a-4370-bf0e-4d68c4942aa3",
+			"key": "postTitle_edited2",
+			"value": "patch acceptance test 1",
+			"type": "string"
+		},
+		{
+			"id": "b0dbfbd9-41cb-4a45-a0fd-a980fcb5c490",
+			"key": "postBody_edited2",
+			"value": "body has been changed, test 1",
+			"type": "string"
+		},
+		{
+			"id": "c091eab7-08c7-45f3-baec-8c05be116517",
+			"key": "commentName_new",
+			"value": "post a comment test 1",
+			"type": "string"
+		},
+		{
+			"id": "72111c2b-543d-4054-aa1d-771e5b98ba81",
+			"key": "commentEmail_new",
+			"value": "testing@tests.io",
+			"type": "string"
+		},
+		{
+			"id": "8bb96692-0c90-4bfe-9c8c-c8ab0ebbeb27",
+			"key": "commentBody_new",
+			"value": "Sample comment test 1",
+			"type": "string"
+		},
+		{
+			"id": "cbf9dbd6-04e4-45c6-b0db-925af6e32c75",
+			"key": "commentName_edited",
+			"value": "Edit a comment test 1",
+			"type": "string"
+		},
+		{
+			"id": "1a3cfa07-6956-4fe3-806f-36f409d393de",
+			"key": "commentBody_edited",
+			"value": "Edited sample comment test 1",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
