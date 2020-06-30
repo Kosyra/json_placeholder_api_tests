@@ -510,11 +510,9 @@
 									"    pm.expect(pm.response.code).to.be.oneOf([201,202]);",
 									"});",
 									"",
-									"const postId = Number(pm.environment.get(\"postId_existing\"));",
-									"",
 									"pm.test(\"Check if body for comment was created and has specific data\", function () {",
 									"    const response = pm.response.json();",
-									"    pm.expect(response.postId).to.eql(postId);",
+									"    pm.expect(response.postId).to.eql((pm.environment.get(\"postId_existing\")), \"postId has wrong value\");",
 									"    pm.expect(response.name).to.eql(pm.variables.get(\"commentName_new\"));",
 									"    pm.expect(response.email).to.eql(pm.variables.get(\"commentEmail_new\"));",
 									"    pm.expect(response.body).to.eql(pm.variables.get(\"commentBody_new\"));",
@@ -605,70 +603,59 @@
 	],
 	"variable": [
 		{
-			"id": "4887bd51-3db0-4dd9-869b-96be437aa470",
+			"id": "e8766977-216a-4c38-a835-83da475fb8eb",
 			"key": "postTitle_new",
-			"value": "text title test 1",
-			"type": "string"
+			"value": "text title test 1"
 		},
 		{
-			"id": "aee03c24-83f5-437d-a60c-3e4a0e7c4500",
+			"id": "e027565d-84b2-4fc7-b502-c74fbc802b2d",
 			"key": "postBody_new",
-			"value": "text body test 1",
-			"type": "string"
+			"value": "text body test 1"
 		},
 		{
-			"id": "a89ba4e4-910c-4b59-9baf-e2cd81d5991b",
+			"id": "e1ce2912-476d-4a51-bb02-0c90c155ec44",
 			"key": "postTitle_edited",
-			"value": "test for changing posts",
-			"type": "string"
+			"value": "test for changing posts"
 		},
 		{
-			"id": "e64cd3c8-7f84-4a41-8984-a6c388f8f6d0",
+			"id": "50e01d8d-2442-4860-97c5-e82ac7741a1e",
 			"key": "postBody_edited",
-			"value": "body text edited",
-			"type": "string"
+			"value": "body text edited"
 		},
 		{
-			"id": "8250c1b2-205a-4370-bf0e-4d68c4942aa3",
+			"id": "2de4fa41-ec62-432f-8b15-ffc1010e6d33",
 			"key": "postTitle_edited2",
-			"value": "patch acceptance test 1",
-			"type": "string"
+			"value": "patch acceptance test 1"
 		},
 		{
-			"id": "b0dbfbd9-41cb-4a45-a0fd-a980fcb5c490",
+			"id": "d857d10c-2cd4-4886-a089-09a87de59452",
 			"key": "postBody_edited2",
-			"value": "body has been changed, test 1",
-			"type": "string"
+			"value": "body has been changed, test 1"
 		},
 		{
-			"id": "c091eab7-08c7-45f3-baec-8c05be116517",
+			"id": "a4e22b0e-a1f7-48e5-939c-78ce7d73b128",
 			"key": "commentName_new",
-			"value": "post a comment test 1",
-			"type": "string"
+			"value": "post a comment test 1"
 		},
 		{
-			"id": "72111c2b-543d-4054-aa1d-771e5b98ba81",
+			"id": "e0af03d6-fb09-4a87-8bc8-f0db4297ef57",
 			"key": "commentEmail_new",
-			"value": "testing@tests.io",
-			"type": "string"
+			"value": "testing@tests.io"
 		},
 		{
-			"id": "8bb96692-0c90-4bfe-9c8c-c8ab0ebbeb27",
+			"id": "b84261f1-b918-42e1-8631-e312e9791710",
 			"key": "commentBody_new",
-			"value": "Sample comment test 1",
-			"type": "string"
+			"value": "Sample comment test 1"
 		},
 		{
-			"id": "cbf9dbd6-04e4-45c6-b0db-925af6e32c75",
+			"id": "64cbae48-755b-47fe-95b9-55f7286604be",
 			"key": "commentName_edited",
-			"value": "Edit a comment test 1",
-			"type": "string"
+			"value": "Edit a comment test 1"
 		},
 		{
-			"id": "1a3cfa07-6956-4fe3-806f-36f409d393de",
+			"id": "73b5bad2-2fc1-4636-932c-dec18fc96fc1",
 			"key": "commentBody_edited",
-			"value": "Edited sample comment test 1",
-			"type": "string"
+			"value": "Edited sample comment test 1"
 		}
 	],
 	"protocolProfileBehavior": {}
